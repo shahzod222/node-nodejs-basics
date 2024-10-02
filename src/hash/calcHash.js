@@ -1,4 +1,4 @@
-import { createHash } from "crypto";
+import crypto from "crypto";
 import path from "path";
 import fs from "fs";
 const __dirname = import.meta.dirname;
@@ -8,9 +8,11 @@ const calculateHash = async () => {
     path.join(__dirname, "files", "fileToCalculateHashFor.txt")
   );
 
-  reader.on("data", (chunk) => {
-    const hashed = createHash("sha256").update(chunk).digest("hex");
-    console.log(hashed);
+  const hash = crypto.createHash("sha256");
+
+  reader.pipe(hash).on("finish", () => {
+    const result = hash.digest("hex");
+    console.log(result);
   });
 };
 

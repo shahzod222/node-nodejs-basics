@@ -7,11 +7,14 @@ const read = async () => {
     if (err) {
       throw new Error("FS operation failed");
     } else {
-      const reader = fs.createReadStream(
-        path.join(__dirname, "files", "fileToRead.txt")
+      fs.readFile(
+        path.join(__dirname, "files", "fileToRead.txt"),
+        (err, data) => {
+          if (!err) {
+            console.log(data.toString());
+          }
+        }
       );
-
-      reader.on("data", (chunk) => console.log(chunk.toString()));
     }
   });
 };
